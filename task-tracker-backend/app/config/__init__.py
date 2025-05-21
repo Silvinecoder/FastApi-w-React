@@ -3,12 +3,12 @@ from app.assistant.environment import env
 config = {
   "database": {
     "engine": "postgresql",
-    "host": env(f"TASK_DATABASE_HOST", "localhost"),
-    "port": env(f"TASK_DATABASE_PORT", "54321"),
-    "schema": env(f"TASK_DATABASE_SCHEMA", ""),
-    "database_name": env(f"TASK_DATABASE_NAME", "task"),
-    "username": env(f"TASK_DATABASE_USERNAME", "task"),
-    "password": env(f"TASK_DATABASE_PASSWORD", "task")
+    "host": env("TASK_TRACKER_HOST", "database"),
+    "port": env("TASK_TRACKER_PORT", "5432"),
+    "schema": env("TASK_TRACKER_SCHEMA", "public"),
+    "database_name": env("TASK_TRACKER_NAME", "task-tracker"),
+    "username": env("TASK_TRACKER_USERNAME", "task-tracker"),
+    "password": env("TASK_TRACKER_PASSWORD", "task-tracker")
   },
 }
 

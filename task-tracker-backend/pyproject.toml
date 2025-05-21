@@ -1,0 +1,23 @@
+[project]
+name = "task-tracker-backend"
+version = "0.1.0"
+description = "FastAPI backend for task tracker"
+authors = [{name = "CSS"}]
+readme = "README.md"
+
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "sqlalchemy",
+    "psycopg2-binary"
+]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["app"]
+
+[tool.setuptools.packages.find]
+where = ["."]

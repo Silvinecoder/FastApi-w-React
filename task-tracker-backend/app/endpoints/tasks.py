@@ -1,14 +1,15 @@
 import uuid
 
-from typing import  List, Optional
-from fastapi import FastAPI, HTTPException
+from typing import List, Optional
+from fastapi import APIRouter, HTTPException
 
 from app.database.db_connection import create_session
-from app.model.Task import TaskTable
+from app.model.Task import TaskTable, Task
 
-app = FastAPI()
+router = APIRouter()
 
-@app.get('/tasks', response_model=List[TaskTable])
+
+@router.get('/tasks', response_model=List[Task])
 def get_user_tasks(user_uuid: uuid.UUID):
     session = create_session()
     try:
@@ -19,16 +20,18 @@ def get_user_tasks(user_uuid: uuid.UUID):
     finally:
         session.close()
 
-@app.put('/tasks/{id}')
-def put_task_of_user(
-        user_uuid: uuid.UUID,
-        title: str,
-        description: Optional[str],
-        is_complete: bool
-):
-    session = create_session()
-    try:
-        existing_user_tasks = session.query(TaskTable).filter_by(user_uuid=user_uuid).all()
-        for index, tasks in enumerate(existing_user_tasks):
-            
+
+# @router.put('/tasks/{id}')
+# def put_task_of_user(
+#         user_uuid: uuid.UUID,
+#         title: str,
+#         description: Optional[str],
+#         is_complete: bool
+# ):
+#     session = create_session()
+#     try:
+#         existing_user_tasks = session.query(TaskTable).filter_by(user_uuid=user_uuid).all()
+#     finally:
+#         session.close()
+
 

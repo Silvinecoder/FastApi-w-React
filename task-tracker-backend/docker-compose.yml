@@ -1,0 +1,30 @@
+services:
+  database:
+    image: postgres
+    container_name: task-tracker-db
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: task-tracker
+      POSTGRES_PASSWORD: task-tracker
+      POSTGRES_DB: task-tracker
+    volumes:
+      - ./database-seed/01-drop.sql:/docker-entrypoint-initdb.d/01-drop.sql
+      - ./database-seed/02-seed.sql:/docker-entrypoint-initdb.d/02-seed.sql
+      - ./.db-data:/var/lib/postgresql/data
+    command: ["postgres", "-c", "log_statement=all"]
+  backend:
+    build:
+      context: ./app
+    container_name: task-tracker-backend
+    ports:
+      - "5050:5050"
+    environment:
+      TASK_TRACKER_HOST: database
+      TASK_TRACKER_PORT: 5432
+      TASK_TRACKER_NAME: task-tracker
+      TASK_TRACKER_SCHEMA: public
+      TASK_TRACKER_USERNAME: task-tracker
+      TASK_TRACKER_PASSWORD: task-tracker
+      PYTHONPATH: /app

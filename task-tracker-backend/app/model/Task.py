@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field
 
 from app.assistant.model_helper import Base
 
-from User import User
+from app.model.User import User
 
 class TaskTable(Base):
     __tablename__ = 'task'
@@ -21,7 +21,7 @@ class TaskTable(Base):
     title = Column(String(50), nullable=False)
     description = Column(String(100), nullable=True)
     is_complete = Column(Boolean)
-    user_uuid = Column(UUID(as_uuid=True), ForeignKey('user.user_uuid'))
+    user_uuid = Column(UUID(as_uuid=True), ForeignKey('user.uuid'))
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
@@ -40,12 +40,14 @@ class TaskTable(Base):
             session.add(task)
         return task
 
+    class Config:
+        orm_mode = True
 
 class Task(BaseModel):
     uuid: uuid.UUID
     title: str = Field(min_length=3, max_length=50)
     description: Optional[str] = Field(default=None, max_length=100)
     is_complete : bool
-    user_uuid : User.user_uuid
+    user_uuid : uuid.UUID
     created_at: datetime = Field(default_factory=datetime.now)
     updated_at: datetime = Field(default_factory=datetime.now)

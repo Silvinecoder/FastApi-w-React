@@ -1,13 +1,13 @@
 import uuid
 
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, HTTPException
 
 from app.database.db_connection import create_session
 from app.model.User import UserTable
 
-app = FastAPI()
+router = APIRouter()
 
-@app.post('/register')
+@router.post('/register')
 def post_new_registered_user(email: str, password_hash: str):
     session = create_session()
     try:

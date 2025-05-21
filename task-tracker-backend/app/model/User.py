@@ -14,7 +14,7 @@ class UserTable(Base):
         nullable=False
     )
     email = Column(String(30), nullable=False)
-    password_hash = Column(String(10), nullable=False)
+    password_hash = Column(String(100), nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now(), nullable=False)
 
@@ -31,10 +31,13 @@ class UserTable(Base):
             session.add(user)
         return user
 
+    class Config:
+        orm_mode = True
+
 class User(BaseModel):
     uuid: uuid.UUID
     email: str = Field(max_length=30)
-    password_hash: str = Field(max_length=10)
+    password_hash: str = Field(max_length=100)
 
 @field_validator('password_hash')
 def check_passwords_match(cls, value):
